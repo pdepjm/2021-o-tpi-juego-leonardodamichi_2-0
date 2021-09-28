@@ -1,10 +1,11 @@
-# Nombre del juego (<- borrar y completar)
+# Batalla Naval
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- GUIDO SIVERIO
+- JOSE LUIS CARBONE
+- JULIETA GOMEZ
+- ALDO ULISES CALLISAYA PLATA
 
 ## Capturas
 
