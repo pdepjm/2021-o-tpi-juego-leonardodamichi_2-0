@@ -27,7 +27,7 @@ Una vez todas las naves han sido posicionadas, se inicia una serie de rondas. En
 Cada jugador referenciará en ese segundo tablero, de diferente manera y a su conveniencia, los disparos que han caído sobre una nave oponente y los que han caído al mar: en la implementación del juego con lápiz y papel, pueden señalarse con una cruz los tiros errados y con un círculo los acertados a una nave, o con cuadrados huecos y rellenos, como se ve en la imagen. En la versión con pizarras, se utilizan pines de un color para los aciertos y de otro para las marras.
 
 Fin de la batalla (fin del juego)
-El juego puede terminar con un ganador o en empate:
+El juego puede terminar con un ganador:
 
 Hay ganador: quien destruya primero todas las naves de su oponente será el vencedor (como en tantos otros juegos en los que se participa por turnos, en caso de que el participante que comenzó la partida hunda en su última jugada el último barco de su oponente que quedaba a flote, el otro participante tiene derecho a una última posibilidad para alcanzar el empate, a un último disparo que también le permita terminar de hundir la flota contraria, lo que supondría un empate);
 
