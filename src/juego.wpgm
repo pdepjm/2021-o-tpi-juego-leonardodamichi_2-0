@@ -1,16 +1,9 @@
 import wollok.game.*
-import pepita.*
+import barcos.*
 import texto.*
-import grilla.*
+import nivel.*
 
 program juego {
-	game.title("Batalla Naval")
-	game.width(32)
-  	game.height(18)
-  	game.cellSize(40)
-	game.addVisual(grilla)
-	game.addVisual(pepita)
-	game.addVisual(texto)
-	game.boardGround("fondoNaval.jpg")
+	nivel.configuracionInicial()
 	game.start()
 }
