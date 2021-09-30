@@ -1,11 +1,13 @@
 import wollok.game.*
+import AI.*
 
 object misil {
 	
-		method disparar(x,y){
-			if(game.at(x,y)){
-				
-			}
+		method dispararJugador(x,y){
+			
 		}
-	
+		
+		method dispararIA(){
+			ai.realizarDisparo(ai.soloLaParteEntera(ai.aux()), ai.soloLaParteDecimal(ai.aux()))
+		}
 }
