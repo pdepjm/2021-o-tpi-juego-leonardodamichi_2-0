@@ -1,5 +1,9 @@
 import wollok.game.*
 import barcos.*
+import disparo.*
+import impacto.*
+import direcciones.*
+import mouse.*
 
 object nivel {
 	method configuracionInicial(){
@@ -8,6 +12,7 @@ object nivel {
 	  	game.height(18)
 	  	game.cellSize(40)
 		game.boardGround("fondoNavalDefinitivo.png")
+		
 		game.addVisual(s1)
 		game.addVisual(s2)
 		game.addVisual(s3)
@@ -15,16 +20,24 @@ object nivel {
 		game.addVisual(c2)
 		game.addVisual(f1)
 		game.addVisual(p1)
-		
-		self.seleccionarColumna()
-		
+		game.addVisualCharacter(mouse)
+		self.metodos()
 	}
 	
+	method metodos(){
+		self.ubicarBarcos()
+		self.seleccionarColumna()
+	}	
+
+	method ubicarBarcos(){
+		var barcoAUbicar = []
+		keyboard.space().onPressDo({barcoAUbicar = game.getObjectsIn(mouse.position())})
+		keyboard.enter().onPressDo({barcoAUbicar.head().position(mouse.position())})
+		keyboard.r().onPressDo({ barcoAUbicar.head().rotar() } )
+	}
+
 	method seleccionarColumna(){
-		
-		//keyboard.r().onPressDo({ barcos.get(indice).rotar() } )
-		
-		 
+				 
 		keyboard.a().onPressDo({self.seleccionarFila(18)})
 		keyboard.b().onPressDo({self.seleccionarFila(19)})
 		keyboard.c().onPressDo({self.seleccionarFila(20)})
@@ -40,16 +53,16 @@ object nivel {
 	
 	method seleccionarFila(columna){
 		
-		keyboard.num0().onPressDo({})
-		keyboard.num1().onPressDo({})
-		keyboard.num2().onPressDo({})
-		keyboard.num3().onPressDo({})
-		keyboard.num4().onPressDo({})
-		keyboard.num5().onPressDo({})
-		keyboard.num6().onPressDo({})
-		keyboard.num7().onPressDo({})
-		keyboard.num8().onPressDo({})
-		keyboard.num9().onPressDo({})
+		keyboard.num0().onPressDo({misil.disparar(columna,13)})
+		keyboard.num1().onPressDo({misil.disparar(columna,12)})
+		keyboard.num2().onPressDo({misil.disparar(columna,11)})
+		keyboard.num3().onPressDo({misil.disparar(columna,10)})
+		keyboard.num4().onPressDo({misil.disparar(columna,9)})
+		keyboard.num5().onPressDo({misil.disparar(columna,8)})
+		keyboard.num6().onPressDo({misil.disparar(columna,7)})
+		keyboard.num7().onPressDo({misil.disparar(columna,6)})
+		keyboard.num8().onPressDo({misil.disparar(columna,5)})
+		keyboard.num9().onPressDo({misil.disparar(columna,4)})
 	}
 	
 }
