@@ -12,6 +12,7 @@ object misil {
 		}
 		
 		method dispararIA(){
+			
 			ai.realizarDisparo(ai.soloLaParteEntera(ai.aux()), ai.soloLaParteDecimal(ai.aux()))
 		}
 	
