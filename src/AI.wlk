@@ -1,10 +1,10 @@
 import wollok.game.*
 import disparo.*
+import impacto.*
 
 object ai {
 	
 	const posiciones = [4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13,
-
 		
 						 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 5.10, 5.11, 5.12, 5.13,
 						 
@@ -18,20 +18,17 @@ object ai {
 						 
 						 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11, 10.12, 10.13,
 						 
-						 11.4, 11.5, 11.6, 11.7, 11.8, 4119, 11.10, 11.11, 11.12, 11.13,
+						 11.4, 11.5, 11.6, 11.7, 11.8, 11.9, 11.10, 11.11, 11.12, 11.13,
 						 
 						 12.4, 12.5, 12.6, 12.7, 12.8, 12.9, 12.10, 12.11, 12.12, 12.13,
 						 
 						 13.4, 13.5, 13.6, 13.7, 13.8, 13.9, 13.10, 13.11, 13.12, 13.13]
 						 
-
-						 	
-	method realizarDisparo(numero1,numero2){
-		//game.addVisual()
-	}
 		
 	method aux(){
-		return posiciones.anyOne()
+		const pos = posiciones.anyOne()
+		posiciones.remove(pos)
+		return pos
 	}	
 		
 	method posiciones(){
@@ -44,12 +41,12 @@ object ai {
 	}
 	
 	method soloLaParteDecimal(numero){
-		var restado = numero - numero.truncate(0)
+		const restado = numero - numero.truncate(0)
 		
-		if (restado == 0.1 or restado == 0.2 or restado == 0.3 or restado == 0.4 or restado == 0.5
-			or restado == 0.6 or restado == 0.7 or restado == 0.8 or restado == 0.9){
-			return numero -numero.truncate(0) * 10
+		if (restado == 0.4 or restado == 0.5 or restado == 0.6 or restado == 0.7 or restado == 0.8 or restado == 0.9){
+			return restado * 10
+		}else{
+			return restado * 100
 		}
-		return (numero - numero.truncate(0)) *100
 	}
 }

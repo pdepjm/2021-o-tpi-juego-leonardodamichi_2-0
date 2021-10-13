@@ -26,43 +26,53 @@ object nivel {
 	
 	method metodos(){
 		self.ubicarBarcos()
-		self.seleccionarColumna()
+		self.dispararAEnemigo()
 	}	
 
 	method ubicarBarcos(){
-		var barcoAUbicar = []
-		keyboard.space().onPressDo({barcoAUbicar = game.getObjectsIn(mouse.position())})
-		keyboard.enter().onPressDo({barcoAUbicar.head().position(mouse.position())})
-		keyboard.r().onPressDo({ barcoAUbicar.head().rotar() } )
+		var barcoAUbicar = new Barco()
+		
+		keyboard.space().onPressDo({barcoAUbicar = self.hayBarco()})
+		keyboard.enter().onPressDo({barcoAUbicar.position(mouse.position())})
+		keyboard.r().onPressDo({ barcoAUbicar.rotar() } )
+	}
+	
+	method hayBarco(){
+		if(s1.posiciones().contains(mouse.position())){
+			return s1
+		}
+		if(s2.posiciones().contains(mouse.position())){
+			return s2
+		}
+		if(s3.posiciones().contains(mouse.position())){
+			return s3
+		}
+		if(c1.posiciones().contains(mouse.position())){
+			return c1
+		}
+		if(c2.posiciones().contains(mouse.position())){
+			return c2
+		}
+		if(f1.posiciones().contains(mouse.position())){
+			return f1
+		}
+		if(p1.posiciones().contains(mouse.position())){
+			return p1
+		}
+		return null
 	}
 
-	method seleccionarColumna(){
-				 
-		keyboard.a().onPressDo({self.seleccionarFila(18)})
-		keyboard.b().onPressDo({self.seleccionarFila(19)})
-		keyboard.c().onPressDo({self.seleccionarFila(20)})
-		keyboard.d().onPressDo({self.seleccionarFila(21)})
-		keyboard.e().onPressDo({self.seleccionarFila(22)})
-		keyboard.f().onPressDo({self.seleccionarFila(23)})
-		keyboard.g().onPressDo({self.seleccionarFila(24)})
-		keyboard.h().onPressDo({self.seleccionarFila(25)})
-		keyboard.i().onPressDo({self.seleccionarFila(26)})
-		keyboard.j().onPressDo({self.seleccionarFila(27)})
-		 	
+	method dispararAEnemigo(){
+		keyboard.x().onPressDo({self.esPosicionValida()})
 	}
 	
-	method seleccionarFila(columna){
-		
-		keyboard.num0().onPressDo({misil.disparar(columna,13)})
-		keyboard.num1().onPressDo({misil.disparar(columna,12)})
-		keyboard.num2().onPressDo({misil.disparar(columna,11)})
-		keyboard.num3().onPressDo({misil.disparar(columna,10)})
-		keyboard.num4().onPressDo({misil.disparar(columna,9)})
-		keyboard.num5().onPressDo({misil.disparar(columna,8)})
-		keyboard.num6().onPressDo({misil.disparar(columna,7)})
-		keyboard.num7().onPressDo({misil.disparar(columna,6)})
-		keyboard.num8().onPressDo({misil.disparar(columna,5)})
-		keyboard.num9().onPressDo({misil.disparar(columna,4)})
+	method esPosicionValida(){
+		if(mouse.position().x() >= 18 and mouse.position().x() <= 27 and mouse.position().y() >= 4 and mouse.position().y() <= 13){
+			disparo.disparar() 
+		}else if(game.getObjectsIn(mouse.position()).size() != 0){
+			game.say(mouse,"Ya has disparado en esa coordenada")
+		}else{
+			game.say(mouse,"Posicion no valida para disparar")
+		}
 	}
-	
 }
