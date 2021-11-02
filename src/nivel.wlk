@@ -47,8 +47,8 @@ object nivel {
 		var barcoAUbicar = new Barco()
 		
 		keyboard.space().onPressDo({barcoAUbicar = self.obtenerBarco(barcos)})
-		keyboard.enter().onPressDo({barcoAUbicar.position(mouse.position())})
-		keyboard.r().onPressDo({ barcoAUbicar.rotar() } )
+		keyboard.enter().onPressDo({barcoAUbicar.position(mouse.position()) barcoAUbicar.actualizarPosiciones(mouse.position())})
+		keyboard.r().onPressDo({ barcoAUbicar.rotar() barcoAUbicar.actualizarPosiciones(mouse.position())} )
 	}
 	
 	method obtenerBarco(barcos){
@@ -73,6 +73,6 @@ object nivel {
 	}
 	
 	method yaSeDisparo(){
-		return game.getObjectsIn(mouse.position()).contains(disparo.misilAgua()) or game.getObjectsIn(mouse.position()).contains(disparo.misilFuego())
+		return disparo.misilesAgua().contains(mouse.position()) or disparo.misilesFuego().contains(mouse.position())
 	}
 }

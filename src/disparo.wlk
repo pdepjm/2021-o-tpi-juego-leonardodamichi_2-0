@@ -8,26 +8,26 @@ import mouse.*
 object disparo {
 		const secuenciaAgua = ["agua2.png","agua3.png","agua4.png","agua5.png","agua6.png","agua7.png","agua8.png","agua9.png","agua10.png","agua11.png","agua12.png","agua13.png","agua14.png","agua15.png","agua16.png"]
 		const secuenciaFuego = ["fuego2.png","fuego3.png","fuego4.png","fuego5.png"]
-		var misilAgua = new Impacto(image = "")
-		var misilFuego = new Impacto(image = "")
+		const misilesAgua = []
+		const misilesFuego = []
 		
 		method disparoJugador(){
-			if(self.hayBarco()){
+			if(self.hayBarcoEnemigo()){
 				self.fuego(mouse.position())
 			}else{
 				self.agua(mouse.position())
-				game.schedule(800,{self.disparoIA()})
+				game.schedule(800,{self.disparoIA(self.posRandomIA())})
 			}
+			self.redrawMouse()
 			
 		}
 		
-		method disparoIA(){
-			
-			if(game.getObjectsIn(self.posRandomIA()).size() == 2){
-				game.schedule(500,{self.fuego(self.posRandomIA())})
-				self.disparoIA()
+		method disparoIA(pos){
+			if(self.hayBarcoAliado(pos)){
+				game.schedule(500,{self.fuego(pos)})
+				game.schedule(800,{self.disparoIA(self.posRandomIA())})
 			}else{
-				game.schedule(500,{self.agua(self.posRandomIA())})
+				game.schedule(500,{self.agua(pos)})
 			}
 			
 		}
@@ -36,23 +36,34 @@ object disparo {
 		method fuego(posicion){
 			
 			var i = 0
-			misilFuego = new Impacto(position = posicion, image = "fuego1.png")
+			const misilFuego = new Impacto(position = posicion, image = "fuego1.png")
 			game.addVisual(misilFuego)
 			game.onTick(80,"fuego",{misilFuego.image(secuenciaFuego.get(i)) i=i+1 if(i == 3){game.removeTickEvent("fuego")}})
+			misilesFuego.add(posicion)
+			/*
+			self.realizarImpacto(self.barcoImpactado(posicion), posicion)
+			if(self.barcoImpactado(posicion).posiciones().isEmpty()){
+				var destruido = new Destruido()
+				destruido = self.barcoImpactado(posicion)
+				game.addVisual(destruido)
+			}
+			
+			*/
 			
 		}
 		
 		method agua(posicion){
 			var i = 0
-			misilAgua = new Impacto(position = posicion, image = "agua1.png")
+			const misilAgua = new Impacto(position = posicion, image = "agua1.png")
 			game.addVisual(misilAgua)
 			game.onTick(80,"agua",{misilAgua.image(secuenciaAgua.get(i)) i=i+1 if(i == 14){game.removeTickEvent("agua")}})
+			misilesAgua.add(posicion)
 			
 		}
 		
-		method misilAgua() = misilAgua
+		method misilesAgua() = misilesAgua
 		
-		method misilFuego() = misilFuego
+		method misilesFuego() = misilesFuego
 
 		
 		method posRandomIA(){
@@ -60,8 +71,37 @@ object disparo {
 			return game.at(ai.soloLaParteEntera(num),ai.soloLaParteDecimal(num))
 		}
 		
-		method hayBarco(){
-			return nivel.barcosEnemigos().any({a=> game.getObjectsIn(mouse.position()).contains(a)})
+		method hayBarcoEnemigo(){
+			return nivel.barcosEnemigos().any({a=> a.posiciones().contains(mouse.position())})
+		}
+		
+		method hayBarcoAliado(pos){
+			return barcosAliados.barcos().any({a=> a.posiciones().contains(pos)})
+		}
+		
+		method barcoImpactado(posicion){
+			return nivel.barcosEnemigos().find({a => a.posiciones().contains(posicion)})			
+		}
+		
+		method realizarImpacto(barco, posicion){
+			barco.posiciones().remove(posicion)
+		}
+		
+		method redrawMouse(){
+			game.removeVisual(mouse)
+			game.addVisual(mouse)
 		}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
