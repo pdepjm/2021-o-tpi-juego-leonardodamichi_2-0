@@ -6,6 +6,9 @@ import direcciones.*
 import mouse.*
 
 object nivel {
+	
+	const distribucion = [distribucion1].anyOne()
+	
 	method configuracionInicial(){
 		game.title("Batalla Naval")
 		game.width(32)
@@ -20,46 +23,37 @@ object nivel {
 		game.addVisual(c2)
 		game.addVisual(f1)
 		game.addVisual(p1)
+		
+		
+		
 		game.addVisualCharacter(mouse)
 		self.metodos()
 	}
 	
 	method metodos(){
-		self.ubicarBarcos()
+		self.ubicarBarcos([s1,s2,s3,c1,c2,f1,p1])
+		self.distribuirBarcosEnemigos()
 		self.dispararAEnemigo()
 	}	
+	
+	method distribuirBarcosEnemigos(){
+		
+		distribucion.barcosEnemigos().forEach({a => game.addVisual(a)})
+	}
+	
+	method barcosEnemigos() = distribucion.barcosEnemigos()
 
-	method ubicarBarcos(){
+	method ubicarBarcos(barcos){
 		var barcoAUbicar = new Barco()
 		
-		keyboard.space().onPressDo({barcoAUbicar = self.hayBarco()})
+		keyboard.space().onPressDo({barcoAUbicar = self.obtenerBarco(barcos)})
 		keyboard.enter().onPressDo({barcoAUbicar.position(mouse.position())})
 		keyboard.r().onPressDo({ barcoAUbicar.rotar() } )
 	}
 	
-	method hayBarco(){
-		if(s1.posiciones().contains(mouse.position())){
-			return s1
-		}
-		if(s2.posiciones().contains(mouse.position())){
-			return s2
-		}
-		if(s3.posiciones().contains(mouse.position())){
-			return s3
-		}
-		if(c1.posiciones().contains(mouse.position())){
-			return c1
-		}
-		if(c2.posiciones().contains(mouse.position())){
-			return c2
-		}
-		if(f1.posiciones().contains(mouse.position())){
-			return f1
-		}
-		if(p1.posiciones().contains(mouse.position())){
-			return p1
-		}
-		return null
+	method obtenerBarco(barcos){
+		return barcos.find({b => b.posiciones().contains(mouse.position())})
+		
 	}
 
 	method dispararAEnemigo(){
@@ -68,11 +62,17 @@ object nivel {
 	
 	method esPosicionValida(){
 		if(mouse.position().x() >= 18 and mouse.position().x() <= 27 and mouse.position().y() >= 4 and mouse.position().y() <= 13){
-			disparo.disparar() 
-		}else if(game.getObjectsIn(mouse.position()).size() != 0){
-			game.say(mouse,"Ya has disparado en esa coordenada")
+			if(self.yaSeDisparo()){
+				game.say(mouse,"Ya has disparado en esa coordenada")
+			}else{
+				disparo.disparoJugador() 
+			}
 		}else{
 			game.say(mouse,"Posicion no valida para disparar")
 		}
+	}
+	
+	method yaSeDisparo(){
+		return game.getObjectsIn(mouse.position()).contains(disparo.misilAgua()) or game.getObjectsIn(mouse.position()).contains(disparo.misilFuego())
 	}
 }

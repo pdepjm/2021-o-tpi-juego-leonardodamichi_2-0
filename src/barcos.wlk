@@ -2,78 +2,195 @@ import wollok.game.*
 
 class Barco{
 	var property position = game.at(0,0)
-	var imagen = ""
-	const posiciones = []
+	const tipoBarco = submarino
+	var image = tipoBarco.image()
+	var posiciones = tipoBarco.posiciones(self.position())
+	
+	method image() = image
+		
+	method rotar(){
+		tipoBarco.rotar()
+		image = tipoBarco.image()
+		posiciones = tipoBarco.posiciones(self.position())
+	}
+		
+	method posiciones() = posiciones
+	
+}
 
+object submarino {
+	var imagen = "submarino_h.png"
+	
 	method image() = imagen
 	
-	method setImage(nuevaImagen){
-		imagen = nuevaImagen
-	}
-	
-	method moverPara(direccion) {
-		position = direccion.proximaPosicion(position) 
+	method estaHorizontal(){
+		return imagen.contains("h")
 	}
 	
 	method rotar(){
-		if (self.image().contains("h")){
-			self.setImage(self.image().take(self.image().size()-5) + "v.png")
+		if(self.estaHorizontal()){
+			imagen = "submarino_v.png"
 		}else{
-			self.setImage(self.image().take(self.image().size()-5) + "h.png")
+			imagen = "submarino_h.png"
 		}
 	}
 	
-	method posiciones(){
-		posiciones.add(self.position())
-		if (self.image().contains("h")){
-			posiciones.add(game.at(self.position().x()+1,self.position().y()))
-			
-			if(self.image().contains("corbeta")){
-				posiciones.add(game.at(self.position().x()+2,self.position().y()))
-			}
-			
-			if(self.image().contains("fragata")){
-				posiciones.add(game.at(self.position().x()+2,self.position().y()))
-				posiciones.add(game.at(self.position().x()+3,self.position().y()))
-			}
-			
-			if(self.image().contains("porta")){
-				posiciones.add(game.at(self.position().x()+2,self.position().y()))
-				posiciones.add(game.at(self.position().x()+3,self.position().y()))
-				posiciones.add(game.at(self.position().x()+4,self.position().y()))
-			}
+	method posiciones(posActual){
+		const posiciones = []
+		
+		if(self.estaHorizontal()){
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x()+1,posActual.y()))
 		
 		}else{
-			posiciones.add(game.at(self.position().x(),self.position().y()+1))
-			
-			if(self.image().contains("corbeta")){
-				posiciones.add(game.at(self.position().x(),self.position().y()+2))
-			}
-			
-			if(self.image().contains("fragata")){
-				posiciones.add(game.at(self.position().x(),self.position().y()+2))
-				posiciones.add(game.at(self.position().x(),self.position().y()+3))
-			}
-			
-			if(self.image().contains("porta")){
-				posiciones.add(game.at(self.position().x(),self.position().y()+2))
-				posiciones.add(game.at(self.position().x(),self.position().y()+3))
-				posiciones.add(game.at(self.position().x(),self.position().y()+4))
-			}
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x(),posActual.y()+1))
+		}
+		
+		return posiciones
+		
+	}
+}
+
+object corbeta {
+	var imagen = "corbeta_h.png"
+	
+	method image() = imagen
+	
+	method estaHorizontal(){
+		return imagen.contains("h")
+	}
+	
+	method rotar(){
+		if(self.estaHorizontal()){
+			imagen = "corbeta_v.png"
+		}else{
+			imagen = "corbeta_h.png"
+		}
+	}
+	
+	method posiciones(posActual){
+		const posiciones = []
+		if(self.estaHorizontal()){
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x()+1,posActual.y()))
+			posiciones.add(game.at(posActual.x()+2,posActual.y()))
+		
+		}else{
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x(),posActual.y()+1))
+			posiciones.add(game.at(posActual.x(),posActual.y()+2))
 		}
 		return posiciones
-			
+	}
+}
+
+object fragata {
+	var imagen = "fragata_h.png"
+	
+	method image() = imagen
+	
+	method estaHorizontal(){
+		return imagen.contains("h")
+	}
+	
+	method rotar(){
+		if(self.estaHorizontal()){
+			imagen = "fragata_v.png"
+		}else{
+			imagen = "fragata_h.png"
+		}
+	}
+	
+	method posiciones(posActual){
+		const posiciones = []
+		if(self.estaHorizontal()){
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x()+1,posActual.y()))
+			posiciones.add(game.at(posActual.x()+2,posActual.y()))
+			posiciones.add(game.at(posActual.x()+3,posActual.y()))
+		
+		}else{
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x(),posActual.y()+1))
+			posiciones.add(game.at(posActual.x(),posActual.y()+2))
+			posiciones.add(game.at(posActual.x(),posActual.y()+3))
+		}
+		return posiciones
+	}
+}
+
+object porta {
+	var imagen = "porta_h.png"
+	
+	method image() = imagen
+	
+	method estaHorizontal(){
+		return imagen.contains("h")
+	}
+	
+	method rotar(){
+		if(self.estaHorizontal()){
+			imagen = "porta_v.png"
+		}else{
+			imagen = "porta_h.png"
+		}
+	}
+	
+	method posiciones(posActual){
+		const posiciones = []
+		if(self.estaHorizontal()){
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x()+1,posActual.y()))
+			posiciones.add(game.at(posActual.x()+2,posActual.y()))
+			posiciones.add(game.at(posActual.x()+3,posActual.y()))
+			posiciones.add(game.at(posActual.x()+4,posActual.y()))
+		
+		}else{
+			posiciones.add(posActual)
+			posiciones.add(game.at(posActual.x(),posActual.y()+1))
+			posiciones.add(game.at(posActual.x(),posActual.y()+2))
+			posiciones.add(game.at(posActual.x(),posActual.y()+3))
+			posiciones.add(game.at(posActual.x(),posActual.y()+4))
+		}
+		return posiciones
 	}
 	
 }
 
-const s1 = new Barco(position = game.at(4,3), imagen = "submarino_h.png")
-const s2 = new Barco(position = game.at(6,3), imagen = "submarino_h.png")
-const s3 = new Barco(position = game.at(8,3), imagen = "submarino_h.png")
+class BarcoEnemigo {
+	var property position = game.at(0,0)
+	const tipoBarco = submarino
+	const posiciones
+	
+}
 
-const c1 = new Barco(position = game.at(10,3), imagen = "corbeta_h.png")
-const c2 = new Barco(position = game.at(4,2), imagen = "corbeta_h.png")
+object distribucion1{
+	const s1e = new BarcoEnemigo(position = game.at(19,12), posiciones = [game.at(19,12),game.at(19,13)])
+	const s2e = new BarcoEnemigo(position = game.at(20,8), posiciones = [game.at(20,8),game.at(21,8)])
+	const s3e = new BarcoEnemigo(position = game.at(24,11), posiciones = [game.at(24,11),game.at(24,12)])
+	const c1e = new BarcoEnemigo(position = game.at(18,4), posiciones = [game.at(18,4),game.at(18,5),game.at(18,6)])
+	const c2e = new BarcoEnemigo(position = game.at(22,6), posiciones = [game.at(22,6),game.at(23,6),game.at(24,6)])
+	const f1e = new BarcoEnemigo(position = game.at(27,8), posiciones = [game.at(27,8),game.at(27,9),game.at(27,10),game.at(27,12)])
+	const p1e = new BarcoEnemigo(position = game.at(22,4), posiciones = [game.at(22,4),game.at(23,4),game.at(24,4),game.at(25,4),game.at(26,4)])
+	
+	method barcosEnemigos() = [s1e,s2e,s3e,c1e,c2e,f1e,p1e]
+	
+}
 
-const f1 = new Barco(position = game.at(7,2), imagen = "fragata_h.png")
 
-const p1 = new Barco(position = game.at(4,1), imagen = "porta_h.png")
+
+
+const s1 = new Barco(position = game.at(4,3), tipoBarco = submarino)
+const s2 = new Barco(position = game.at(6,3), tipoBarco = submarino)
+const s3 = new Barco(position = game.at(8,3), tipoBarco = submarino)
+
+const c1 = new Barco(position = game.at(10,3), tipoBarco = corbeta)
+const c2 = new Barco(position = game.at(4,2), tipoBarco = corbeta)
+
+const f1 = new Barco(position = game.at(7,2), tipoBarco = fragata)
+
+const p1 = new Barco(position = game.at(4,1), tipoBarco = porta)
+
+
+
