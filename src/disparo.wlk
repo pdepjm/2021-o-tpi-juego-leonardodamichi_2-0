@@ -14,6 +14,9 @@ object disparo {
 		method disparoJugador(){
 			if(self.hayBarcoEnemigo()){
 				self.fuego(mouse.position())
+				if(self.barcosEnemigosDestruidos()){
+					self.victoria()
+				}
 			}else{
 				self.agua(mouse.position())
 				game.schedule(800,{self.disparoIA(self.posRandomIA())})
@@ -25,7 +28,12 @@ object disparo {
 		method disparoIA(pos){
 			if(self.hayBarcoAliado(pos)){
 				game.schedule(500,{self.fuego(pos)})
-				game.schedule(800,{self.disparoIA(self.posRandomIA())})
+				if(self.barcosAliadosDestruidos()){
+					self.derrota()
+				}else{
+					game.schedule(800,{self.disparoIA(self.posRandomIA())})	
+				}
+				
 			}else{
 				game.schedule(500,{self.agua(pos)})
 			}
@@ -40,15 +48,9 @@ object disparo {
 			game.addVisual(misilFuego)
 			game.onTick(80,"fuego",{misilFuego.image(secuenciaFuego.get(i)) i=i+1 if(i == 3){game.removeTickEvent("fuego")}})
 			misilesFuego.add(posicion)
-			/*
-			self.realizarImpacto(self.barcoImpactado(posicion), posicion)
-			if(self.barcoImpactado(posicion).posiciones().isEmpty()){
-				var destruido = new Destruido()
-				destruido = self.barcoImpactado(posicion)
-				game.addVisual(destruido)
-			}
 			
-			*/
+			self.realizarImpacto(self.barcoImpactado(posicion), posicion)
+			
 			
 		}
 		
@@ -91,6 +93,24 @@ object disparo {
 			game.removeVisual(mouse)
 			game.addVisual(mouse)
 		}
+
+		
+		method barcosEnemigosDestruidos(){
+			return nivel.barcosEnemigos().all({a => a.posiciones().isEmpty()})
+		}
+		
+		method barcosAliadosDestruidos(){
+			return barcosAliados.barcos().all({a => a.posiciones().isEmpty()})
+		}
+		
+		method victoria(){
+			game.say(mouse,"VICTORIA")
+		}
+		
+		method derrota(){
+			game.say(mouse,"DERROTA")			
+		}
+
 
 }
 
