@@ -21,6 +21,33 @@ class Barco{
 	}
 	
 }
+/*class Barco1{
+	var imagenHorizontal
+	var imagenVertical
+	var sentidoHorizontal = true
+	var tamanio
+	var posiciones
+	var imagenAMostrar
+	
+	method rotar(){
+		if(sentidoHorizontal)
+		{
+			imagenAMostrar = imagenVertical
+			sentidoHorizontal = false
+		} 
+		else
+		{
+			imagenAMostrar = imagenHorizontal
+			sentidoHorizontal = true
+		}
+	}
+	method eliminarPosicion(ubicacion) {
+		posiciones.remove(ubicacion)
+	}
+	method barcoUndido() = posiciones.size() == 0
+}*/
+
+
 
 object submarino {
 	var imagen = "submarino_h.png"
