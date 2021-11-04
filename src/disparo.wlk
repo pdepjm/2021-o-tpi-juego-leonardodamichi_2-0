@@ -4,21 +4,30 @@ import impacto.*
 import nivel.*
 import AI.*
 import mouse.*
+import jugadores.*
+import soundProducer.*
+
+const secuenciaAgua = ["agua2.png","agua3.png","agua4.png","agua5.png","agua6.png","agua7.png","agua8.png","agua9.png","agua10.png","agua11.png","agua12.png","agua13.png","agua14.png","agua15.png","agua16.png"]
+const secuenciaFuego = ["fuego2.png","fuego3.png","fuego4.png","fuego5.png"]
 
 object disparo {
-		const secuenciaAgua = ["agua2.png","agua3.png","agua4.png","agua5.png","agua6.png","agua7.png","agua8.png","agua9.png","agua10.png","agua11.png","agua12.png","agua13.png","agua14.png","agua15.png","agua16.png"]
-		const secuenciaFuego = ["fuego2.png","fuego3.png","fuego4.png","fuego5.png"]
-		const misilesAgua = []
-		const misilesFuego = []
+			
 		
-		method disparoJugador(){
-			if(self.hayBarcoEnemigo()){
-				self.fuego(mouse.position())
-				if(self.barcosEnemigosDestruidos()){
-					self.victoria()
+		method disparoJugador(pos){
+			
+			if(self.hayBarco(partida.enemigo(), pos)){
+				
+				self.fuego(pos)
+				misilFuego.posicionYaDisparada(pos)
+				self.realizarImpacto(self.barcoAfectado(partida.enemigo(), pos))
+				
+				if(partida.enemigo().barcosHundidos()){
+					game.say(mouse,"VICTORIA")
 				}
+				
 			}else{
-				self.agua(mouse.position())
+				self.agua(pos)
+				misilAgua.posicionYaDisparada(pos)
 				game.schedule(800,{self.disparoIA(self.posRandomIA())})
 			}
 			self.redrawMouse()
@@ -26,10 +35,15 @@ object disparo {
 		}
 		
 		method disparoIA(pos){
-			if(self.hayBarcoAliado(pos)){
+			
+			if(self.hayBarco(partida.aliado(), pos)){
+				
 				game.schedule(500,{self.fuego(pos)})
-				if(self.barcosAliadosDestruidos()){
-					self.derrota()
+				self.realizarImpacto(self.barcoAfectado(partida.aliado(), pos))
+				
+				if(partida.aliado().barcosHundidos()){
+					game.say(mouse,"DERROTA")
+				
 				}else{
 					game.schedule(800,{self.disparoIA(self.posRandomIA())})	
 				}
@@ -47,11 +61,8 @@ object disparo {
 			const misilFuego = new Impacto(position = posicion, image = "fuego1.png")
 			game.addVisual(misilFuego)
 			game.onTick(80,"fuego",{misilFuego.image(secuenciaFuego.get(i)) i=i+1 if(i == 3){game.removeTickEvent("fuego")}})
-			misilesFuego.add(posicion)
-			
-			self.realizarImpacto(self.barcoImpactado(posicion), posicion)
-			
-			
+			//game.sound().play()
+			//soundProducer.sound("impactoBarco.mp3").play()
 		}
 		
 		method agua(posicion){
@@ -59,34 +70,21 @@ object disparo {
 			const misilAgua = new Impacto(position = posicion, image = "agua1.png")
 			game.addVisual(misilAgua)
 			game.onTick(80,"agua",{misilAgua.image(secuenciaAgua.get(i)) i=i+1 if(i == 14){game.removeTickEvent("agua")}})
-			misilesAgua.add(posicion)
+			//game.sound("impactoAgua.mp3").play()
 			
 		}
-		
-		method misilesAgua() = misilesAgua
-		
-		method misilesFuego() = misilesFuego
-
 		
 		method posRandomIA(){
 			const num = ai.aux()
 			return game.at(ai.soloLaParteEntera(num),ai.soloLaParteDecimal(num))
 		}
 		
-		method hayBarcoEnemigo(){
-			return nivel.barcosEnemigos().any({a=> a.posiciones().contains(mouse.position())})
+		method hayBarco(jugador, pos){
+			return jugador.barcos().any({a=> a.posiciones().contains(pos)})
 		}
 		
-		method hayBarcoAliado(pos){
-			return barcosAliados.barcos().any({a=> a.posiciones().contains(pos)})
-		}
-		
-		method barcoImpactado(posicion){
-			return nivel.barcosEnemigos().find({a => a.posiciones().contains(posicion)})			
-		}
-		
-		method realizarImpacto(barco, posicion){
-			barco.posiciones().remove(posicion)
+		method realizarImpacto(barco){
+			barco.quitarVida()
 		}
 		
 		method redrawMouse(){
@@ -94,34 +92,31 @@ object disparo {
 			game.addVisual(mouse)
 		}
 
-		
-		method barcosEnemigosDestruidos(){
-			return nivel.barcosEnemigos().all({a => a.posiciones().isEmpty()})
+		method barcoAfectado(jugador, pos){
+			return jugador.barcos().find({a => a.posiciones().contains(pos)})
 		}
 		
-		method barcosAliadosDestruidos(){
-			return barcosAliados.barcos().all({a => a.posiciones().isEmpty()})
-		}
-		
-		method victoria(){
-			game.say(mouse,"VICTORIA")
-		}
-		
-		method derrota(){
-			game.say(mouse,"DERROTA")			
-		}
-
 
 }
 
+object misilAgua{
+	const misilesAgua = []
+	
+	method posicionYaDisparada(pos){
+		misilesAgua.add(pos)
+	}
+	
+	method misiles() = misilesAgua
+			
+}
 
-
-
-
-
-
-
-
-
-
-
+object misilFuego{
+	const misilesFuego = []
+	
+	method posicionYaDisparada(pos){
+		misilesFuego.add(pos)
+	}
+	
+	method misiles() = misilesFuego
+	
+}
