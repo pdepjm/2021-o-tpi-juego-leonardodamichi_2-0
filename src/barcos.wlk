@@ -280,7 +280,7 @@ class Barco{
 
 
 
-
+/*
 
 object submarino {
 	var imagen = "submarino_h.png"
