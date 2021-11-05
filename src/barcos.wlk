@@ -39,7 +39,7 @@ class BarcoAliado inherits Barco{
 class BarcoEnemigo inherits Barco{	
 	
 }
-
+/*
 class TipoBarco{
 	const property nombre
 	const orientacion = vertical
@@ -49,7 +49,7 @@ class TipoBarco{
 	var tamanio
 	
 }
-
+ */
 object vertical{
 	method imagen(nombre){
 		return nombre + "_v.png"	
