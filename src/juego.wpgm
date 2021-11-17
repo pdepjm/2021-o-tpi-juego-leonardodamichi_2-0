@@ -1,6 +1,5 @@
 import wollok.game.*
 import barcos.*
-import texto.*
 import nivel.*
 
 program juego {
