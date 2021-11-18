@@ -3,6 +3,6 @@ import barcos.*
 import nivel.*
 
 program juego {
-	nivel.configuracionInicial()
+	menu.inicio()
 	game.start()
 }

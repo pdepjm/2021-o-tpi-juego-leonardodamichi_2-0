@@ -17,6 +17,14 @@ class Barco{
 	method hundido() = tipo.hundido()
 	
 	method vida() = tipo.vida()
+	
+	method tamanio() = tipo.tamanio()
+	
+	method nombre() = tipo.nombre()
+	
+	method nombre(nuevoNombre) = tipo.nombre(nuevoNombre)
+	
+	method orientacion() = tipo.orientacion()
 }
 
 class BarcoAliado inherits Barco{	
@@ -30,23 +38,30 @@ class BarcoAliado inherits Barco{
 
 
 class BarcoEnemigo inherits Barco{	
+		
+}
+
+class BarcoDestruido inherits BarcoEnemigo{
 	
+	method image() = tipo.imagenSeleccionada()
 }
 
 
 
 class Tipo{
-	const property nombre
+	var property nombre
 	const tamanio
 	var vida
 	var orientacion = horizontal //aprovecha el polimorfismo
-	
+		
 	method vida() = vida
+	
+	method tamanio() = tamanio
 	
 	method reducirVida(){
 		vida = vida - 1
 	}
-	
+		
 	method imagenSeleccionada() = orientacion.imagen(nombre)
 	
 	method rotar(){
@@ -62,6 +77,8 @@ class Tipo{
 	}
 	
 	method hundido() = vida == 0
+	
+	method orientacion() = orientacion
 }
 
 //objeto polimorfico

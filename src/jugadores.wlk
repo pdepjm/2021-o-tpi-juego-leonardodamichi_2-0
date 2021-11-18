@@ -9,7 +9,7 @@ class Aliado{
 	var b4 = new BarcoAliado(position = game.at(10,3), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3))
 	var b5 = new BarcoAliado(position = game.at(4,2), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3))
 	var b6 = new BarcoAliado(position = game.at(7,2), tipo = new Tipo(nombre = "fragata", tamanio = 4, vida = 4))
-	var b7 = new BarcoAliado(position = game.at(4,1), tipo = new Tipo(nombre = "portaviones", tamanio = 5, vida = 5))
+	var b7 = new BarcoAliado(position = game.at(4,1), tipo = new Tipo(nombre = "porta", tamanio = 5, vida = 5))
 		
 	const barcos = [b1,b2,b3,b4,b5,b6,b7]	
 	
@@ -37,7 +37,7 @@ class Enemigo{
 	var b4 = new BarcoEnemigo(position = game.at(18,4), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3, orientacion = vertical))
 	var b5 = new BarcoEnemigo(position = game.at(22,6), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3))
 	var b6 = new BarcoEnemigo(position = game.at(27,8), tipo = new Tipo(nombre = "fragata", tamanio = 4, vida = 4, orientacion = vertical))
-	var b7 = new BarcoEnemigo(position = game.at(22,4), tipo = new Tipo(nombre = "portaviones", tamanio = 5, vida = 5))
+	var b7 = new BarcoEnemigo(position = game.at(22,4), tipo = new Tipo(nombre = "porta", tamanio = 5, vida = 5))
 	
 	const barcosE = [b1,b2,b3,b4,b5,b6,b7]
 		

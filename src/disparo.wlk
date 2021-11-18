@@ -16,10 +16,13 @@ object disparo {
 		
 		method disparoJugador(pos){
 			
-			if(nivel.partida().hayBarco(nivel.enemigo(),pos)){
-				
+			if(self.hayBarco(nivel.enemigo(),pos)){
+				const barco = nivel.partida().obtenerBarco(nivel.enemigo(),pos)
 				fuego.crearVisual(pos)
-				self.realizarImpacto(nivel.partida().obtenerBarco(nivel.enemigo(),pos))	
+				self.realizarImpacto(barco)	
+				if(barco.hundido()){
+					game.addVisual(self.barcoDestruido(barco))
+				}
 			}else{
 				agua.crearVisual(pos)
 				game.schedule(800,{self.disparoIA(self.posRandomIA())})
@@ -27,7 +30,8 @@ object disparo {
 			misilesDisparados.add(pos)
 			
 			if(nivel.enemigo().barcosHundidos()){
-				game.say(mouse,"VICTORIA")
+				
+				game.schedule(500,{game.clear() game.addVisual(victoria)})
 			}else{
 				self.redrawMouse()
 			}	
@@ -35,23 +39,41 @@ object disparo {
 		
 		method disparoIA(pos){
 			
-			if(nivel.partida().hayBarco(nivel.aliado(),pos)){
+			if(self.hayBarco(nivel.aliado(),pos)){
+				
+				const barco = nivel.partida().obtenerBarco(nivel.aliado(),pos)
 				
 				game.schedule(500,{fuego.crearVisual(pos)})
-				self.realizarImpacto(nivel.partida().obtenerBarco(nivel.aliado(),pos))
 				
+				self.realizarImpacto(barco)
+				
+				game.schedule(500,{
+					if(barco.hundido()){
+						barco.nombre(barco.nombre()+"1")
+						game.removeVisual(barco)
+						game.addVisual(barco)
+					}
+				})		
+				
+								
 				if(nivel.aliado().barcosHundidos()){
-					game.say(mouse,"DERROTA")
+					
+					game.schedule(500,{game.clear() game.addVisual(derrota)})
 				
 				}else{
+					
 					game.schedule(800,{self.disparoIA(self.posRandomIA())})	
 				}
+				
+				
 				
 			}else{
 				game.schedule(500,{agua.crearVisual(pos)})
 			}
 			
 		}
+		
+		method hayBarco(jugador,pos) = nivel.partida().hayBarco(jugador,pos)
 		
 		method posRandomIA(){
 			const num = ai.aux()
@@ -69,16 +91,36 @@ object disparo {
 
 		method yaSeDisparo(pos) = misilesDisparados.contains(pos)
 		
-
+		method barcoDestruido(barco){
+			const nuevoNombre = barco.nombre() + "1"
+			return new BarcoDestruido(position = barco.position(), tipo = new Tipo(nombre = nuevoNombre, tamanio = barco.tamanio(), vida = barco.vida(), orientacion = barco.orientacion()))	
+		} 
 }
+
+
+
+
+object victoria{
+	const property position = game.at(0,0)
+	const property image = "victoria.png"
+}
+
+
+object derrota{
+	const property position = game.at(0,0)
+	const property image = "derrota.png"
+}
+
 
 object fuego{
 	method crearVisual(pos){
 		var i = 0
 		const misilFuego = new Impacto(position = pos, image = "fuego1.png")
 		game.addVisual(misilFuego)
-		game.onTick(80,"fuego",{misilFuego.image(secuenciaFuego.get(i)) i=i+1 if(i == 3){game.removeTickEvent("fuego")}})
-		soundProducer.sound("impactoBarco.mp3").play()
+		game.sound("impactoBarco.mp3").volume(0.4)
+		game.sound("impactoBarco.mp3").play()
+		game.schedule(1000,{})
+		game.onTick(80,"fuego",{misilFuego.image(secuenciaFuego.get(i)) i=i+1 if(i == 4){game.removeTickEvent("fuego")}})
 	}		
 }
 
@@ -87,7 +129,8 @@ object agua{
 		var i = 0
 		const misilAgua = new Impacto(position = pos, image = "agua1.png")
 		game.addVisual(misilAgua)
+		game.sound("impactoAgua.mp3").volume(0.4)
+		game.sound("impactoAgua.mp3").play()
 		game.onTick(80,"agua",{misilAgua.image(secuenciaAgua.get(i)) i=i+1 if(i == 14){game.removeTickEvent("agua")}})
-		soundProducer.sound("impactoAgua.mp3").play()
 	}
 }

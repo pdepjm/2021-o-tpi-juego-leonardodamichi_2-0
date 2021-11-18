@@ -23,9 +23,9 @@ class Partida{
 		keyboard.space().onPressDo({
 			if(self.hayBarco(aliado, mouse.position())){
 				barcoAUbicar = self.obtenerBarco(aliado,mouse.position())
-				game.say(mouse, "Barco Seleccionado")
+				game.say(mouse,"Barco Elegido")
 			}else{
-				game.say(mouse, "No hay ningun barco en esta posicion")
+				game.say(mouse, "No hay barco en esta posicion")
 			}	
 				})
 		keyboard.enter().onPressDo({barcoAUbicar.position(mouse.position())}) 
