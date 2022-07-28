@@ -1,0 +1,31 @@
+import partida.*
+import barcos.*
+import jugadores.*
+import disparo.*
+import nivel.*
+import mouse.*
+import AI.*
+import wollok.game.*
+
+describe "prueba"{
+	var b1 = new BarcoEnemigo(position = game.at(19,12), tipo = new Tipo(nombre = "submarino", tamanio = 2, vida = 2, orientacion = vertical))
+	var b2 = new BarcoEnemigo(position = game.at(20,8), tipo = new Tipo(nombre = "submarino", tamanio = 2, vida = 2, orientacion = vertical))
+	var b3 = new BarcoEnemigo(position = game.at(24,11), tipo = new Tipo(nombre = "submarino", tamanio = 2, vida = 2))
+	var b4 = new BarcoEnemigo(position = game.at(18,4), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3, orientacion = vertical))
+	var b5 = new BarcoEnemigo(position = game.at(22,6), tipo = new Tipo(nombre = "corbeta", tamanio = 3, vida = 3))
+	var b6 = new BarcoEnemigo(position = game.at(27,8), tipo = new Tipo(nombre = "fragata", tamanio = 4, vida = 4, orientacion = vertical))
+	var b7 = new BarcoEnemigo(position = game.at(22,4), tipo = new Tipo(nombre = "portaviones", tamanio = 5, vida = 5))
+
+	const barcosE = [b1,b2,b3,b4,b5,b6,b7]
+
+	method obtenerBarco(pos) = barcosE.find({barco => barco.posiciones().contains(pos)})
+		
+	test "vida reducida" {
+		
+		disparo.realizarImpacto(self.obtenerBarco(game.at(19,12)))
+		disparo.realizarImpacto(self.obtenerBarco(game.at(19,13)))
+		
+		assert.that(barcosE.head().hundido())
+	
+	}	
+}
