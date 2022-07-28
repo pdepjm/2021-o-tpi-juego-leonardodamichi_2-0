@@ -1,15 +1,6 @@
 # Batalla Naval
 
-## Equipo de desarrollo
-
-- GUIDO SIVERIO
-- JOSE LUIS CARBONE
-- JULIETA GOMEZ
-- ALDO ULISES CALLISAYA PLATA
-
-## Capturas
-
-(agregar)
+Batalla Naval desarrollada en lenguaje Wollok
 
 ## Reglas de Juego / Instrucciones
 
@@ -31,6 +22,3 @@ El juego puede terminar con un ganador:
 
 Hay ganador: quien destruya primero todas las naves de su oponente será el vencedor (como en tantos otros juegos en los que se participa por turnos, en caso de que el participante que comenzó la partida hunda en su última jugada el último barco de su oponente que quedaba a flote, el otro participante tiene derecho a una última posibilidad para alcanzar el empate, a un último disparo que también le permita terminar de hundir la flota contraria, lo que supondría un empate);
 
-## Respuestas teóricas
-
-(link al archivo o bien responder acá)
